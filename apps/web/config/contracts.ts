@@ -745,10 +745,10 @@ export interface DeploymentInfo {
 
 export const DEPLOYED_CONTRACTS: Record<string, DeploymentInfo> = {
   "1337": {
-    "address": "0xd09a5be8c02e7ff81c07be80a3ce289b3c0fd7fd",
+    "address": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
     "chainId": 1337,
     "networkName": "ganache",
-    "deployedAt": "2026-10-28T06:35:40.357Z"
+    "deployedAt": "2026-10-28T11:27:31.939Z"
   }
 } as const;
 

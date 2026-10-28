@@ -6,7 +6,7 @@
     "build": "hardhat build && node scripts/sync-artifacts.ts",
     "compile": "hardhat compile && node scripts/sync-artifacts.ts",
     "sync": "node scripts/sync-artifacts.ts",
-    "ganache": "ganache --port 8545",
+    "ganache": "ganache --port 8545 -d",
     "deploy:ganache": "hardhat run scripts/deploy.ts --network ganache"
   },
   "devDependencies": {
