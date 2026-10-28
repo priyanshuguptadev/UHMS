@@ -1,0 +1,8 @@
+{
+  "1337": {
+    "address": "0xd09a5be8c02e7ff81c07be80a3ce289b3c0fd7fd",
+    "chainId": 1337,
+    "networkName": "ganache",
+    "deployedAt": "2026-10-28T06:35:40.357Z"
+  }
+}
