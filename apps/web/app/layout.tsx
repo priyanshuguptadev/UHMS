@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Web3Provider } from "@/components/Web3Provider";
+import "@radix-ui/themes/styles.css";
 import "./globals.css";
 
 const inter = Inter({
