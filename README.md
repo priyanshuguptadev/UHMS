@@ -6,8 +6,8 @@ PNPM workspace monorepo containing 2 Node.js applications.
 
 ```
 ├── apps/
-│   ├── app1/            # Node.js app 1 (default port: 3001)
-│   └── app2/            # Node.js app 2 (default port: 3002)
+│   ├── contracts/       # Hardhat v3
+│   └── web/            # Next.js 16
 ├── packages/            # Shared packages (optional)
 ├── package.json         # Workspace root configuration
 ├── pnpm-workspace.yaml  # PNPM workspace definition
