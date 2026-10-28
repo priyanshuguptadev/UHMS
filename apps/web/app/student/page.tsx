@@ -28,13 +28,26 @@ import {
 
 export default function StudentPortal() {
   const { address, isConnected } = useUHMSConnection();
-  const { data: studentData, isLoading: isStudentLoading, refetch: refetchStudent } =
-    useGetStudent(address);
+  const {
+    data: studentData,
+    isLoading: isStudentLoading,
+    isError: isStudentError,
+    error: studentError,
+    refetch: refetchStudent,
+  } = useGetStudent(address);
 
-  const wallet = studentData?.wallet;
-  const idCardIpfsHash = studentData?.idCardIpfsHash;
-  const isRegistered = Boolean(studentData?.isRegistered);
-  const currentApplicationId = studentData?.currentApplicationId;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rawStudent = studentData as any;
+  const wallet = Array.isArray(rawStudent) ? rawStudent[0] : rawStudent?.wallet;
+  const idCardIpfsHash = Array.isArray(rawStudent)
+    ? rawStudent[1]
+    : rawStudent?.idCardIpfsHash;
+  const isRegistered = Boolean(
+    Array.isArray(rawStudent) ? rawStudent[2] : rawStudent?.isRegistered
+  );
+  const currentApplicationId = Array.isArray(rawStudent)
+    ? rawStudent[3]
+    : rawStudent?.currentApplicationId;
 
   const hasActiveApplication =
     currentApplicationId !== undefined && currentApplicationId > BigInt(0);
@@ -104,6 +117,24 @@ export default function StudentPortal() {
     return (
       <div className="max-w-4xl mx-auto py-16 px-4 text-center">
         <p className="text-sm text-gray-500 animate-pulse">Loading student record...</p>
+      </div>
+    );
+  }
+
+  if (isStudentError && !studentError?.message?.includes("Student not registered")) {
+    return (
+      <div className="max-w-2xl mx-auto py-16 px-4">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-start gap-4">
+          <CrossCircledIcon className="w-6 h-6 text-red-600 shrink-0 mt-0.5" />
+          <div>
+            <h3 className="text-sm font-semibold text-red-900">
+              Contract Call Error
+            </h3>
+            <p className="mt-1 text-xs text-red-700">
+              {studentError?.message || "Failed to load student record from blockchain."}
+            </p>
+          </div>
+        </div>
       </div>
     );
   }

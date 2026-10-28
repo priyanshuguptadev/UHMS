@@ -61,6 +61,21 @@ export function syncArtifacts(newDeployment?: {
       "utf-8"
     );
     console.log(`Updated ${deployedContractsPath}`);
+
+    const envLocalPath = resolve(webConfigDir, "../.env.local");
+    if (existsSync(envLocalPath)) {
+      let envContent = readFileSync(envLocalPath, "utf-8");
+      if (envContent.includes("NEXT_PUBLIC_UHMS_ADDRESS=")) {
+        envContent = envContent.replace(
+          /NEXT_PUBLIC_UHMS_ADDRESS=.*/,
+          `NEXT_PUBLIC_UHMS_ADDRESS=${newDeployment.address}`
+        );
+      } else {
+        envContent += `\nNEXT_PUBLIC_UHMS_ADDRESS=${newDeployment.address}\n`;
+      }
+      writeFileSync(envLocalPath, envContent, "utf-8");
+      console.log(`Updated NEXT_PUBLIC_UHMS_ADDRESS in ${envLocalPath}`);
+    }
   }
 
   // 4. Generate contracts.ts with typed ABI (as const)

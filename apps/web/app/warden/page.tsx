@@ -17,12 +17,23 @@ import {
 
 export default function WardenPortal() {
   const { address, isConnected } = useUHMSConnection();
-  const { data: wardenData, isLoading: isWardenLoading } = useGetWarden(address);
+  const {
+    data: wardenData,
+    isLoading: isWardenLoading,
+    isError: isWardenError,
+    error: wardenError,
+  } = useGetWarden(address);
 
-  const wallet = wardenData?.wallet;
-  const idCardIpfsHash = wardenData?.idCardIpfsHash;
-  const hostelId = wardenData?.hostelId;
-  const isRegistered = Boolean(wardenData?.isRegistered);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const rawWarden = wardenData as any;
+  const wallet = Array.isArray(rawWarden) ? rawWarden[0] : rawWarden?.wallet;
+  const idCardIpfsHash = Array.isArray(rawWarden)
+    ? rawWarden[1]
+    : rawWarden?.idCardIpfsHash;
+  const hostelId = Array.isArray(rawWarden) ? rawWarden[2] : rawWarden?.hostelId;
+  const isRegistered = Boolean(
+    Array.isArray(rawWarden) ? rawWarden[3] : rawWarden?.isRegistered
+  );
 
   // Hostel info
   const { data: hostelData } = useHostel(isRegistered ? hostelId : undefined);
@@ -52,6 +63,24 @@ export default function WardenPortal() {
     return (
       <div className="max-w-4xl mx-auto py-16 px-4 text-center">
         <p className="text-sm text-gray-500 animate-pulse">Loading warden details...</p>
+      </div>
+    );
+  }
+
+  if (isWardenError && !wardenError?.message?.includes("Warden not registered")) {
+    return (
+      <div className="max-w-2xl mx-auto py-16 px-4">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-start gap-4">
+          <ExclamationTriangleIcon className="w-6 h-6 text-red-600 shrink-0 mt-0.5" />
+          <div>
+            <h3 className="text-sm font-semibold text-red-900">
+              Contract Call Error
+            </h3>
+            <p className="mt-1 text-xs text-red-700">
+              {wardenError?.message || "Failed to load warden record from blockchain."}
+            </p>
+          </div>
+        </div>
       </div>
     );
   }

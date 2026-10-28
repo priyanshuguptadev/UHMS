@@ -748,7 +748,7 @@ export const DEPLOYED_CONTRACTS: Record<string, DeploymentInfo> = {
     "address": "0xe78a0f7e598cc8b0bb87894b0f60dd2a88d6a8ab",
     "chainId": 1337,
     "networkName": "ganache",
-    "deployedAt": "2026-10-28T11:55:28.163Z"
+    "deployedAt": "2026-10-28T13:15:55.128Z"
   }
 } as const;
 
