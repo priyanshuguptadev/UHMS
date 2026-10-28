@@ -9,7 +9,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "UHMS",
-  description: "University Hostal Management System using Blockchain",
+  description: "University Hostel Management System using Blockchain",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

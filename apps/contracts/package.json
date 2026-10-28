@@ -2,11 +2,18 @@
   "name": "contracts",
   "version": "1.0.0",
   "type": "module",
-  "devDependencies": {
-    "@types/node": "^26.6.5",
-    "ganache": "^7.9.2"
+  "scripts": {
+    "build": "hardhat build",
+    "compile": "hardhat compile",
+    "ganache": "ganache --port 8545",
+    "deploy:ganache": "hardhat run scripts/deploy.ts --network ganache"
   },
-  "dependencies": {
-    "hardhat": "^3.21.1"
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.7",
+    "@types/node": "^22.20.5",
+    "ganache": "^7.9.2",
+    "hardhat": "^3.21.1",
+    "typescript": "~6.0.3",
+    "viem": "^2.57.12"
   }
 }
