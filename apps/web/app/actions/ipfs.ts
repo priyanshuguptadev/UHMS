@@ -1,5 +1,7 @@
 "use server";
 
+import { PinataSDK } from "pinata";
+
 export interface PinataUploadResult {
   success: boolean;
   ipfsHash?: string;
@@ -7,7 +9,7 @@ export interface PinataUploadResult {
 }
 
 /**
- * Server action to upload an ID card image to IPFS via Pinata.
+ * Server action to upload an ID card image to IPFS via the Pinata SDK.
  * Falls back to mock hash if Pinata JWT is not provided in development.
  */
 export async function uploadIdCardToPinata(
@@ -35,62 +37,21 @@ export async function uploadIdCardToPinata(
     }
 
     const pinataJwt = process.env.PINATA_JWT;
+    const pinataGateway = process.env.PINATA_GATEWAY;
 
-    if (!pinataJwt) {
-      // Development fallback if Pinata JWT is not configured yet
-      console.warn(
-        "PINATA_JWT environment variable not detected. Generating deterministic mock IPFS hash."
-      );
-      // Generate a mock IPFS CID v0 format for testing
-      const arrayBuffer = await file.arrayBuffer();
-      const bytes = new Uint8Array(arrayBuffer);
-      let hash = 0;
-      for (let i = 0; i < bytes.length; i++) {
-        hash = (hash << 5) - hash + bytes[i];
-        hash |= 0;
-      }
-      const pseudoHash = Math.abs(hash).toString(16).padStart(8, "0");
-      const mockCid = `QmDev${pseudoHash}${Date.now().toString(16)}`;
 
-      return {
-        success: true,
-        ipfsHash: mockCid,
-      };
-    }
-
-    const pinataFormData = new FormData();
-    pinataFormData.append("file", file);
-
-    const metadata = JSON.stringify({
-      name: `UHMS-ID-${Date.now()}-${file.name}`,
-    });
-    pinataFormData.append("pinataMetadata", metadata);
-
-    const pinataOptions = JSON.stringify({
-      cidVersion: 0,
-    });
-    pinataFormData.append("pinataOptions", pinataOptions);
-
-    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${pinataJwt}`,
-      },
-      body: pinataFormData,
+    const pinata = new PinataSDK({
+      pinataJwt,
+      pinataGateway,
     });
 
-    if (!res.ok) {
-      const errText = await res.text();
-      return {
-        success: false,
-        error: `Pinata upload failed (${res.status}): ${errText}`,
-      };
-    }
+    const upload = await pinata.upload.public
+      .file(file)
+      .name(`UHMS-ID-${Date.now()}-${file.name}`);
 
-    const data = await res.json();
     return {
       success: true,
-      ipfsHash: data.IpfsHash,
+      ipfsHash: upload.cid,
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Upload error";
