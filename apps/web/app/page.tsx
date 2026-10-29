@@ -4,12 +4,9 @@ import Link from "next/link";
 import { useUHMSConnection } from "@/hooks/useUHMSConnection";
 import { useHostelCounter, useApplicationCounter } from "@/hooks/useUHMSRead";
 import {
-  PersonIcon,
-  HomeIcon,
-  FileTextIcon,
   ArrowRightIcon,
-  LockClosedIcon,
   CheckCircledIcon,
+  DotFilledIcon,
 } from "@radix-ui/react-icons";
 
 export default function HomePage() {
@@ -20,41 +17,41 @@ export default function HomePage() {
   const { data: applicationCount } = useApplicationCounter();
 
   return (
-    <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 space-y-12">
-      {/* Hero section */}
-      <div className="border border-gray-200 rounded-xl bg-white p-8 sm:p-10 space-y-6">
-        <div className="max-w-2xl space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-800">
-            <span>Decentralized Hostel Management</span>
+    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 space-y-10">
+      {/* Overview Header Panel */}
+      <div className="bg-white border border-[#e6e6e6] rounded-lg p-6 sm:p-8 space-y-6">
+        <div className="max-w-2xl space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium bg-[#eeeeee] text-[#0a0a0a]">
+            <span>On-Chain Registry</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#0a0a0a]">
             University Hostel System
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#6b6b6b] leading-relaxed">
             A blockchain-backed portal for hostel allocation and student verification.
-            All registrations, applications, and status decisions are recorded on-chain with decentralized IPFS document storage.
+            All registrations, student credentials, and warden decisions are committed on-chain with decentralized IPFS storage.
           </p>
         </div>
 
-        {/* Stats on-chain */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-gray-100">
+        {/* Metrics Strip */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 pt-5 border-t border-[#f0f0f0]">
           <div>
-            <span className="text-xs text-gray-500 font-medium">Registered Hostels</span>
-            <p className="text-2xl font-bold text-gray-900 mt-0.5">
+            <span className="text-xs text-[#6b6b6b] font-medium">Registered Hostels</span>
+            <p className="text-2xl font-semibold text-[#0a0a0a] tabular-nums mt-0.5">
               {hostelCount !== undefined ? hostelCount.toString() : "0"}
             </p>
           </div>
           <div>
-            <span className="text-xs text-gray-500 font-medium">Applications Filed</span>
-            <p className="text-2xl font-bold text-gray-900 mt-0.5">
+            <span className="text-xs text-[#6b6b6b] font-medium">Applications Filed</span>
+            <p className="text-2xl font-semibold text-[#0a0a0a] tabular-nums mt-0.5">
               {applicationCount !== undefined ? applicationCount.toString() : "0"}
             </p>
           </div>
           <div className="col-span-2 sm:col-span-1">
-            <span className="text-xs text-gray-500 font-medium">Network</span>
-            <p className="text-sm font-semibold text-gray-900 mt-1.5 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              Ganache (1337)
+            <span className="text-xs text-[#6b6b6b] font-medium">Network</span>
+            <p className="text-xs font-medium text-[#0a0a0a] mt-2 flex items-center gap-1.5">
+              <DotFilledIcon className="w-3.5 h-3.5 text-[#2e7d32]" />
+              <span>Ganache (Chain ID 1337)</span>
             </p>
           </div>
         </div>
@@ -67,101 +64,120 @@ export default function HomePage() {
                 if (connector) connect({ connector });
               }}
               disabled={isConnectingWallet}
-              className="inline-flex items-center gap-2 bg-gray-900 text-white text-xs font-medium px-5 py-2.5 rounded-md hover:bg-gray-800 transition disabled:opacity-50"
+              className="inline-flex items-center gap-2 bg-[#141414] text-white text-xs font-medium px-4 py-2.5 rounded-md hover:bg-[#262626] transition disabled:opacity-50 cursor-pointer"
             >
-              <PersonIcon className="w-4 h-4" />
               <span>{isConnectingWallet ? "Connecting..." : "Connect Wallet to Begin"}</span>
             </button>
           </div>
         )}
       </div>
 
-      {/* Role Gateways */}
+      {/* Role Portals */}
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-gray-900">Dedicated Portals</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <h2 className="text-sm font-semibold text-[#0a0a0a]">
+            Portal Gateways
+          </h2>
+          <p className="text-xs text-[#6b6b6b]">
+            Direct access for administrators, registered students, and appointed wardens
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Admin Card */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between space-y-4 hover:border-gray-300 transition">
+          <div className="bg-white border border-[#e6e6e6] rounded-lg p-5 flex flex-col justify-between space-y-4 hover:border-[#d4d4d4] transition">
             <div className="space-y-2">
-              <div className="w-8 h-8 rounded bg-gray-100 text-gray-800 flex items-center justify-center">
-                <LockClosedIcon className="w-4 h-4" />
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-[#0a0a0a]">Admin Portal</span>
+                {isOwner && (
+                  <span className="px-1.5 py-0.5 text-[10px] font-medium bg-[#eeeeee] text-[#0a0a0a] rounded">
+                    Contract Owner
+                  </span>
+                )}
               </div>
-              <h3 className="font-semibold text-gray-900 text-base">Admin Portal</h3>
-              <p className="text-xs text-gray-500 leading-normal">
+              <p className="text-xs text-[#6b6b6b] leading-relaxed">
                 Register new hostel blocks, onboard authorized wardens, and verify student records with IPFS ID hashes.
               </p>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
               <Link
                 href="/admin"
-                className="inline-flex items-center justify-between w-full text-xs font-semibold px-3 py-2 rounded-md bg-gray-50 text-gray-900 hover:bg-gray-100 transition border border-gray-200"
+                className="inline-flex items-center justify-between w-full text-xs font-medium px-3 py-2 rounded-md bg-[#f8f8f8] text-[#0a0a0a] hover:bg-[#eeeeee] transition border border-[#e6e6e6]"
               >
-                <span>{isOwner ? "Manage System" : "Go to Admin"}</span>
-                <ArrowRightIcon className="w-3.5 h-3.5" />
+                <span>{isOwner ? "Manage System" : "Open Admin Portal"}</span>
+                <ArrowRightIcon className="w-3.5 h-3.5 text-[#6b6b6b]" />
               </Link>
               {isOwner && (
-                <div className="mt-2 flex items-center gap-1 text-[11px] text-emerald-600 font-medium">
+                <div className="flex items-center gap-1.5 text-[11px] text-[#2e7d32]">
                   <CheckCircledIcon className="w-3.5 h-3.5" />
-                  <span>Authorized Contract Owner</span>
+                  <span>Authorized Administrator</span>
                 </div>
               )}
             </div>
           </div>
 
           {/* Student Card */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between space-y-4 hover:border-gray-300 transition">
+          <div className="bg-white border border-[#e6e6e6] rounded-lg p-5 flex flex-col justify-between space-y-4 hover:border-[#d4d4d4] transition">
             <div className="space-y-2">
-              <div className="w-8 h-8 rounded bg-blue-50 text-blue-700 flex items-center justify-center">
-                <FileTextIcon className="w-4 h-4" />
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-[#0a0a0a]">Student Portal</span>
+                {isStudent && (
+                  <span className="px-1.5 py-0.5 text-[10px] font-medium bg-[#dcfae5] text-[#04250e] rounded">
+                    Verified
+                  </span>
+                )}
               </div>
-              <h3 className="font-semibold text-gray-900 text-base">Student Portal</h3>
-              <p className="text-xs text-gray-500 leading-normal">
-                Browse available university hostels, submit on-chain accommodation applications, and track verification decisions.
+              <p className="text-xs text-[#6b6b6b] leading-relaxed">
+                Browse registered campus hostels, submit accommodation requests on-chain, and track verification decisions.
               </p>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
               <Link
                 href="/student"
-                className="inline-flex items-center justify-between w-full text-xs font-semibold px-3 py-2 rounded-md bg-gray-50 text-gray-900 hover:bg-gray-100 transition border border-gray-200"
+                className="inline-flex items-center justify-between w-full text-xs font-medium px-3 py-2 rounded-md bg-[#f8f8f8] text-[#0a0a0a] hover:bg-[#eeeeee] transition border border-[#e6e6e6]"
               >
-                <span>{isStudent ? "View Application" : "Go to Student"}</span>
-                <ArrowRightIcon className="w-3.5 h-3.5" />
+                <span>{isStudent ? "View Application" : "Open Student Portal"}</span>
+                <ArrowRightIcon className="w-3.5 h-3.5 text-[#6b6b6b]" />
               </Link>
               {isStudent && (
-                <div className="mt-2 flex items-center gap-1 text-[11px] text-blue-600 font-medium">
+                <div className="flex items-center gap-1.5 text-[11px] text-[#2e7d32]">
                   <CheckCircledIcon className="w-3.5 h-3.5" />
-                  <span>Registered Student</span>
+                  <span>Registered Student Profile</span>
                 </div>
               )}
             </div>
           </div>
 
           {/* Warden Card */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col justify-between space-y-4 hover:border-gray-300 transition">
+          <div className="bg-white border border-[#e6e6e6] rounded-lg p-5 flex flex-col justify-between space-y-4 hover:border-[#d4d4d4] transition">
             <div className="space-y-2">
-              <div className="w-8 h-8 rounded bg-purple-50 text-purple-700 flex items-center justify-center">
-                <HomeIcon className="w-4 h-4" />
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold text-[#0a0a0a]">Warden Portal</span>
+                {isWarden && (
+                  <span className="px-1.5 py-0.5 text-[10px] font-medium bg-[#eff6ff] text-[#1d5fbf] rounded">
+                    Assigned
+                  </span>
+                )}
               </div>
-              <h3 className="font-semibold text-gray-900 text-base">Warden Portal</h3>
-              <p className="text-xs text-gray-500 leading-normal">
-                View student applicants for your assigned hostel, verify credentials on IPFS, mark under review, approve, or reject with remarks.
+              <p className="text-xs text-[#6b6b6b] leading-relaxed">
+                Review student applicants for your assigned hostel, verify credentials on IPFS, approve, or reject with official remarks.
               </p>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
               <Link
                 href="/warden"
-                className="inline-flex items-center justify-between w-full text-xs font-semibold px-3 py-2 rounded-md bg-gray-50 text-gray-900 hover:bg-gray-100 transition border border-gray-200"
+                className="inline-flex items-center justify-between w-full text-xs font-medium px-3 py-2 rounded-md bg-[#f8f8f8] text-[#0a0a0a] hover:bg-[#eeeeee] transition border border-[#e6e6e6]"
               >
-                <span>{isWarden ? "Review Applications" : "Go to Warden"}</span>
-                <ArrowRightIcon className="w-3.5 h-3.5" />
+                <span>{isWarden ? "Review Applications" : "Open Warden Portal"}</span>
+                <ArrowRightIcon className="w-3.5 h-3.5 text-[#6b6b6b]" />
               </Link>
               {isWarden && (
-                <div className="mt-2 flex items-center gap-1 text-[11px] text-purple-600 font-medium">
+                <div className="flex items-center gap-1.5 text-[11px] text-[#1d5fbf]">
                   <CheckCircledIcon className="w-3.5 h-3.5" />
-                  <span>Assigned Warden</span>
+                  <span>Assigned Hostel Warden</span>
                 </div>
               )}
             </div>

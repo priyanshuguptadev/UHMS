@@ -38,14 +38,14 @@ export function getStatusLabel(status: ApplicationStatus) {
 export function getStatusBadgeClass(status: ApplicationStatus) {
   switch (status) {
     case ApplicationStatus.Submitted:
-      return "bg-amber-50 text-amber-700 border-amber-200";
+      return "bg-[#fffbeb] text-[#92400e] border-[#fde68a]";
     case ApplicationStatus.UnderReview:
-      return "bg-sky-50 text-sky-700 border-sky-200";
+      return "bg-[#eff6ff] text-[#1d5fbf] border-[#bfdbfe]";
     case ApplicationStatus.Approved:
-      return "bg-emerald-50 text-emerald-700 border-emerald-200";
+      return "bg-[#dcfae5] text-[#04250e] border-[#bbf7d0]";
     case ApplicationStatus.Rejected:
-      return "bg-rose-50 text-rose-700 border-rose-200";
+      return "bg-[#ffedea] text-[#831c1e] border-[#fecaca]";
     default:
-      return "bg-gray-50 text-gray-700 border-gray-200";
+      return "bg-[#eeeeee] text-[#3d3d3d] border-[#e6e6e6]";
   }
 }

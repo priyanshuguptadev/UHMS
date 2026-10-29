@@ -25,7 +25,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-gray-50 text-gray-900 font-sans">
+      <body className="min-h-full flex flex-col bg-[#f8f8f8] text-[#0a0a0a] font-sans antialiased">
         <Web3Provider>
           <Header />
           <main className="flex-1">{children}</main>

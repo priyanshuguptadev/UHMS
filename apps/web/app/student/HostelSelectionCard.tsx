@@ -18,7 +18,7 @@ export function HostelSelectionCard({
   const { data: hostel, isLoading } = useHostel(hostelId);
 
   if (isLoading || !hostel) {
-    return <div className="h-20 border border-gray-100 rounded-md bg-gray-50 animate-pulse" />;
+    return <div className="h-16 border border-[#e6e6e6] rounded-md bg-[#f8f8f8]" />;
   }
 
   const { id, name, warden, exists } = hostel;
@@ -29,25 +29,30 @@ export function HostelSelectionCard({
     <button
       type="button"
       onClick={() => onSelect(id)}
-      className={`text-left w-full p-4 rounded-lg border transition-all ${
+      className={`text-left w-full p-3.5 rounded-md border transition cursor-pointer ${
         isSelected
-          ? "border-gray-900 bg-gray-50/80 shadow-xs ring-1 ring-gray-900"
-          : "border-gray-200 bg-white hover:border-gray-300"
+          ? "border-[#141414] bg-[#f8f8f8] ring-1 ring-[#141414]"
+          : "border-[#e6e6e6] bg-white hover:border-[#d4d4d4]"
       }`}
     >
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-sm text-gray-900">{name}</span>
-            <span className="text-xs text-gray-400 font-mono">#{id.toString()}</span>
+            <span className="font-semibold text-xs text-[#0a0a0a]">{name}</span>
+            <span className="text-[11px] text-[#6b6b6b] tabular-nums">#{id.toString()}</span>
           </div>
-          <p className="text-xs text-gray-500 font-mono mt-1">
-            Warden: {warden ? formatAddress(warden) : "Unassigned"}
+          <p className="text-[11px] text-[#6b6b6b] mt-0.5">
+            Warden:{" "}
+            {warden && warden !== "0x0000000000000000000000000000000000000000" ? (
+              <span className="font-mono tabular-nums">{formatAddress(warden)}</span>
+            ) : (
+              <span className="italic">Unassigned</span>
+            )}
           </p>
         </div>
         {isSelected && (
-          <div className="w-5 h-5 rounded-full bg-gray-900 text-white flex items-center justify-center">
-            <CheckIcon className="w-3.5 h-3.5" />
+          <div className="w-4 h-4 rounded-full bg-[#141414] text-white flex items-center justify-center shrink-0">
+            <CheckIcon className="w-3 h-3" />
           </div>
         )}
       </div>

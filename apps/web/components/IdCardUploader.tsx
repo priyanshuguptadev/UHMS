@@ -41,14 +41,14 @@ export function IdCardUploader({ onUploaded, currentHash }: IdCardUploaderProps)
   };
 
   return (
-    <div className="space-y-2">
-      <label className="block text-xs font-medium text-gray-700">
-        ID Card Document (Uploaded to Pinata / IPFS)
+    <div className="space-y-1.5">
+      <label className="block text-xs font-medium text-[#0a0a0a]">
+        ID Card Document (Pinata / IPFS)
       </label>
-      <div className="flex items-center gap-3">
-        <label className="relative cursor-pointer inline-flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md shadow-xs bg-white text-xs font-medium text-gray-700 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-gray-900">
-          <UploadIcon className="w-3.5 h-3.5 text-gray-500" />
-          <span>{isUploading ? "Pinning to IPFS..." : "Choose File"}</span>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2.5">
+        <label className="cursor-pointer inline-flex items-center gap-2 px-3 py-2 border border-[#d4d4d4] rounded-md bg-white hover:bg-[#f8f8f8] text-xs font-medium text-[#0a0a0a] transition focus-within:ring-1 focus-within:ring-[#141414]">
+          <UploadIcon className="w-3.5 h-3.5 text-[#6b6b6b]" />
+          <span>{isUploading ? "Pinning to IPFS..." : "Select Document"}</span>
           <input
             type="file"
             accept="image/*,application/pdf"
@@ -59,9 +59,9 @@ export function IdCardUploader({ onUploaded, currentHash }: IdCardUploaderProps)
         </label>
 
         {uploadedCid && (
-          <div className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1.5 rounded-md border border-emerald-200">
-            <CheckCircledIcon className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span className="font-mono truncate max-w-[200px]" title={uploadedCid}>
+          <div className="flex items-center gap-1.5 text-xs text-[#04250e] bg-[#dcfae5] border border-[#bbf7d0] px-2.5 py-1.5 rounded-md">
+            <CheckCircledIcon className="w-3.5 h-3.5 text-[#2e7d32] shrink-0" />
+            <span className="font-mono tabular-nums text-[11px] truncate max-w-[220px]" title={uploadedCid}>
               {uploadedCid}
             </span>
           </div>
@@ -69,8 +69,8 @@ export function IdCardUploader({ onUploaded, currentHash }: IdCardUploaderProps)
       </div>
 
       {error && (
-        <div className="flex items-center gap-1.5 text-xs text-red-600">
-          <CrossCircledIcon className="w-4 h-4 shrink-0" />
+        <div className="flex items-center gap-1.5 text-xs text-[#831c1e] bg-[#ffedea] border border-[#fecaca] px-2.5 py-1.5 rounded-md">
+          <CrossCircledIcon className="w-3.5 h-3.5 shrink-0" />
           <span>{error}</span>
         </div>
       )}

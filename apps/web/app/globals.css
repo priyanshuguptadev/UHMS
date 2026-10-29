@@ -1,2 +1,17 @@
 @import "tailwindcss";
 
+:root {
+  --ground: #f8f8f8;
+  --surface: #ffffff;
+  --raised: #eeeeee;
+  --border: #e6e6e6;
+  --rule: #f0f0f0;
+  --control: #d4d4d4;
+  --text: #0a0a0a;
+  --muted: #6b6b6b;
+  --accent: #141414;
+  --positive: #2e7d32;
+  --negative: #c4242a;
+  --warning: #92400e;
+  --chart-blue: #1d5fbf;
+}

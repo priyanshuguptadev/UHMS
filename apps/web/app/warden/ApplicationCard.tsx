@@ -54,7 +54,7 @@ export function ApplicationCard({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (isLoading) {
-    return <div className="h-28 border border-gray-100 rounded-lg bg-gray-50/50 animate-pulse" />;
+    return <div className="h-24 border border-[#e6e6e6] rounded-md bg-[#f8f8f8]" />;
   }
 
   if (!id) return null;
@@ -102,14 +102,14 @@ export function ApplicationCard({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-5 space-y-4 hover:border-gray-300 transition">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+    <div className="bg-white border border-[#e6e6e6] rounded-md p-4 space-y-3.5 hover:border-[#d4d4d4] transition">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#f0f0f0] pb-3">
         <div className="flex items-center gap-2.5">
-          <span className="font-semibold text-sm text-gray-900">
+          <span className="font-semibold text-xs text-[#0a0a0a] tabular-nums">
             Application #{id.toString()}
           </span>
           <span
-            className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${getStatusBadgeClass(
+            className={`px-2 py-0.5 rounded text-[11px] font-medium border ${getStatusBadgeClass(
               currentStatus
             )}`}
           >
@@ -117,14 +117,19 @@ export function ApplicationCard({
           </span>
         </div>
 
-        <div className="flex items-center gap-4 text-xs text-gray-500 font-mono">
-          <span>Student: {formatAddress(student)}</span>
+        <div className="flex items-center gap-3 text-xs text-[#6b6b6b]">
+          <span>
+            Student:{" "}
+            <span className="font-mono tabular-nums text-[#0a0a0a]">
+              {formatAddress(student)}
+            </span>
+          </span>
           {studentIpfs && (
             <a
               href={`https://gateway.pinata.cloud/ipfs/${studentIpfs}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-gray-700 hover:text-gray-900 underline underline-offset-2"
+              className="inline-flex items-center gap-1 text-[#1d5fbf] hover:underline"
             >
               <span>ID Card</span>
               <ExternalLinkIcon className="w-3 h-3" />
@@ -133,24 +138,24 @@ export function ApplicationCard({
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
+      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-[#6b6b6b]">
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1">
-            <ClockIcon className="w-3.5 h-3.5 text-gray-400" />
+          <span className="flex items-center gap-1.5 tabular-nums">
+            <ClockIcon className="w-3.5 h-3.5 text-[#6b6b6b]" />
             Created: {formatTimestamp(createdAt)}
           </span>
           {updatedAt && createdAt && updatedAt > createdAt && (
-            <span>Updated: {formatTimestamp(updatedAt)}</span>
+            <span className="tabular-nums">Updated: {formatTimestamp(updatedAt)}</span>
           )}
         </div>
 
-        {/* Actions depending on status */}
+        {/* Action Controls */}
         <div className="flex items-center gap-2">
           {currentStatus === ApplicationStatus.Submitted && (
             <button
               onClick={handleReview}
               disabled={isSubmitting || reviewHook.isPrompting || reviewHook.isMining}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-sky-50 text-sky-700 border border-sky-200 rounded-md hover:bg-sky-100 text-xs font-medium transition disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#eeeeee] text-[#0a0a0a] hover:bg-[#e5e5e5] rounded-md text-xs font-medium transition disabled:opacity-50 cursor-pointer"
             >
               <EyeOpenIcon className="w-3.5 h-3.5" />
               <span>Mark Under Review</span>
@@ -166,7 +171,7 @@ export function ApplicationCard({
                   approveHook.isPrompting ||
                   approveHook.isMining
                 }
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 text-xs font-medium transition disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#141414] text-white rounded-md hover:bg-[#262626] text-xs font-medium transition disabled:opacity-50 cursor-pointer"
               >
                 <CheckIcon className="w-3.5 h-3.5" />
                 <span>Approve</span>
@@ -175,7 +180,7 @@ export function ApplicationCard({
               <button
                 onClick={() => setShowRejectModal(true)}
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-md hover:bg-rose-100 text-xs font-medium transition disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#ffedea] text-[#831c1e] border border-[#fecaca] rounded-md hover:bg-[#fed7d7] text-xs font-medium transition disabled:opacity-50 cursor-pointer"
               >
                 <Cross2Icon className="w-3.5 h-3.5" />
                 <span>Reject</span>
@@ -186,26 +191,38 @@ export function ApplicationCard({
       </div>
 
       {remark && (
-        <div className="text-xs bg-gray-50 border border-gray-200 rounded-md p-3 text-gray-700">
-          <span className="font-semibold text-gray-900">Remark: </span>
-          <span className="italic">&ldquo;{remark}&rdquo;</span>
+        <div className="text-xs bg-[#f8f8f8] border border-[#e6e6e6] rounded-md p-3 text-[#0a0a0a]">
+          <span className="font-semibold">Remark: </span>
+          <span className="italic text-[#6b6b6b]">&ldquo;{remark}&rdquo;</span>
         </div>
       )}
 
       {/* Reject Modal */}
       {showRejectModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full p-6 space-y-4 shadow-xl border border-gray-200">
-            <h3 className="text-base font-semibold text-gray-900">
-              Reject Application #{id.toString()}
-            </h3>
-            <p className="text-xs text-gray-500">
-              Please enter an official remark/reason for rejecting this student&apos;s hostel application.
-            </p>
+        <div className="fixed inset-0 bg-[#0a0a0a]/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full p-6 space-y-4 border border-[#e6e6e6] shadow-xl">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-base font-semibold text-[#0a0a0a]">
+                  Reject Application #{id.toString()}
+                </h3>
+                <p className="text-xs text-[#6b6b6b] mt-0.5">
+                  Enter an official remark stating the reason for rejecting this applicant
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowRejectModal(false)}
+                className="p-1 text-[#6b6b6b] hover:text-[#0a0a0a] rounded hover:bg-[#f8f8f8] transition cursor-pointer"
+              >
+                <Cross2Icon className="w-4 h-4" />
+              </button>
+            </div>
+
             <form onSubmit={handleReject} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">
-                  Rejection Remark
+                <label className="block text-xs font-medium text-[#0a0a0a] mb-1">
+                  Rejection Reason
                 </label>
                 <textarea
                   value={rejectRemark}
@@ -213,15 +230,15 @@ export function ApplicationCard({
                   placeholder="e.g. Incomplete verification documents / No vacant capacity"
                   rows={3}
                   required
-                  className="w-full text-xs p-2.5 border border-gray-300 rounded-md focus:outline-hidden focus:ring-1 focus:ring-gray-900"
+                  className="w-full text-xs p-2.5 border border-[#d4d4d4] rounded-md bg-white text-[#0a0a0a] focus:outline-hidden focus:border-[#141414] focus:ring-1 focus:ring-[#141414]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2">
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#f0f0f0]">
                 <button
                   type="button"
                   onClick={() => setShowRejectModal(false)}
-                  className="px-3 py-1.5 border border-gray-200 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50"
+                  className="px-3.5 py-2 border border-[#d4d4d4] rounded-md text-xs font-medium text-[#0a0a0a] hover:bg-[#f8f8f8] cursor-pointer transition"
                 >
                   Cancel
                 </button>
@@ -232,7 +249,7 @@ export function ApplicationCard({
                     rejectHook.isPrompting ||
                     rejectHook.isMining
                   }
-                  className="px-3 py-1.5 bg-rose-600 text-white rounded-md text-xs font-medium hover:bg-rose-700 disabled:opacity-50"
+                  className="px-4 py-2 bg-[#c4242a] text-white rounded-md text-xs font-medium hover:bg-[#a81c21] disabled:opacity-50 cursor-pointer transition"
                 >
                   Confirm Rejection
                 </button>

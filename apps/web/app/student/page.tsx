@@ -24,6 +24,8 @@ import {
   ExternalLinkIcon,
   FileTextIcon,
   ClockIcon,
+  PlusIcon,
+  Cross2Icon,
 } from "@radix-ui/react-icons";
 
 export default function StudentPortal() {
@@ -72,7 +74,8 @@ export default function StudentPortal() {
   const { data: hostelCountData } = useHostelCounter();
   const hostelCount = hostelCountData ? Number(hostelCountData) : 0;
 
-  // Apply form state
+  // Apply form state & modal
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [selectedHostelId, setSelectedHostelId] = useState<bigint | null>(null);
   const applyHook = useApplyForHostel();
 
@@ -92,6 +95,7 @@ export default function StudentPortal() {
         type: "success",
         message: "Application submitted successfully to blockchain",
       });
+      setIsApplyModalOpen(false);
       setTimeout(() => {
         refetchStudent();
         refetchApplication();
@@ -105,9 +109,9 @@ export default function StudentPortal() {
   if (!isConnected) {
     return (
       <div className="max-w-4xl mx-auto py-16 px-4 text-center">
-        <h2 className="text-xl font-semibold text-gray-900">Student Portal</h2>
-        <p className="mt-2 text-sm text-gray-600">
-          Please connect your registered student wallet to view hostel applications.
+        <h2 className="text-xl font-semibold text-[#0a0a0a]">Student Portal</h2>
+        <p className="mt-2 text-xs text-[#6b6b6b]">
+          Please connect your registered student wallet to view hostel accommodation.
         </p>
       </div>
     );
@@ -116,7 +120,7 @@ export default function StudentPortal() {
   if (isStudentLoading) {
     return (
       <div className="max-w-4xl mx-auto py-16 px-4 text-center">
-        <p className="text-sm text-gray-500 animate-pulse">Loading student record...</p>
+        <p className="text-xs text-[#6b6b6b]">Loading student record...</p>
       </div>
     );
   }
@@ -124,13 +128,13 @@ export default function StudentPortal() {
   if (isStudentError && !studentError?.message?.includes("Student not registered")) {
     return (
       <div className="max-w-2xl mx-auto py-16 px-4">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-start gap-4">
-          <CrossCircledIcon className="w-6 h-6 text-red-600 shrink-0 mt-0.5" />
-          <div>
-            <h3 className="text-sm font-semibold text-red-900">
+        <div className="bg-[#ffedea] border border-[#fecaca] rounded-lg p-5 flex items-start gap-3">
+          <CrossCircledIcon className="w-5 h-5 text-[#c4242a] shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h3 className="text-xs font-semibold text-[#831c1e]">
               Contract Call Error
             </h3>
-            <p className="mt-1 text-xs text-red-700">
+            <p className="text-xs text-[#831c1e]">
               {studentError?.message || "Failed to load student record from blockchain."}
             </p>
           </div>
@@ -142,13 +146,13 @@ export default function StudentPortal() {
   if (!isRegistered) {
     return (
       <div className="max-w-2xl mx-auto py-16 px-4">
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 flex items-start gap-4">
-          <ExclamationTriangleIcon className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
-          <div>
-            <h3 className="text-sm font-semibold text-amber-900">
+        <div className="bg-[#fffbeb] border border-[#fde68a] rounded-lg p-5 flex items-start gap-3">
+          <ExclamationTriangleIcon className="w-5 h-5 text-[#92400e] shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h3 className="text-xs font-semibold text-[#92400e]">
               Wallet Not Registered
             </h3>
-            <p className="mt-1 text-xs text-amber-700">
+            <p className="text-xs text-[#92400e]/90">
               The connected address ({formatAddress(address)}) is not registered as a student in the contract.
               Please reach out to the university administrator to register your wallet and verify your ID card.
             </p>
@@ -160,19 +164,19 @@ export default function StudentPortal() {
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 space-y-8">
-      {/* Student Profile Banner */}
-      <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
+      {/* Student Profile Header */}
+      <div className="bg-white border border-[#e6e6e6] rounded-lg p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold tracking-tight text-gray-900">
-              Student Portal
+            <h1 className="text-xl font-semibold tracking-tight text-[#0a0a0a]">
+              Student Accommodation Portal
             </h1>
-            <span className="px-2 py-0.5 text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 rounded">
+            <span className="px-2 py-0.5 text-[10px] font-medium bg-[#dcfae5] text-[#04250e] border border-[#bbf7d0] rounded">
               Verified Student
             </span>
           </div>
-          <p className="text-xs text-gray-500 font-mono mt-1">
-            Wallet: {formatAddress(wallet)}
+          <p className="text-xs text-[#6b6b6b]">
+            Wallet: <span className="font-mono tabular-nums text-[#0a0a0a]">{formatAddress(wallet)}</span>
           </p>
         </div>
 
@@ -181,27 +185,27 @@ export default function StudentPortal() {
             href={`https://gateway.pinata.cloud/ipfs/${idCardIpfsHash}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-[#e6e6e6] rounded-md text-xs font-medium text-[#0a0a0a] hover:bg-[#f8f8f8] transition"
           >
-            <FileTextIcon className="w-3.5 h-3.5" />
-            <span>View ID Card IPFS</span>
-            <ExternalLinkIcon className="w-3 h-3 text-gray-400" />
+            <FileTextIcon className="w-3.5 h-3.5 text-[#6b6b6b]" />
+            <span>View Verified ID Card</span>
+            <ExternalLinkIcon className="w-3 h-3 text-[#6b6b6b]" />
           </a>
         )}
       </div>
 
       {feedback && (
         <div
-          className={`p-4 rounded-md border flex items-start gap-3 text-sm ${
+          className={`p-4 rounded-md border flex items-start gap-3 text-xs ${
             feedback.type === "success"
-              ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-              : "bg-rose-50 border-rose-200 text-rose-800"
+              ? "bg-[#dcfae5] border-[#bbf7d0] text-[#04250e]"
+              : "bg-[#ffedea] border-[#fecaca] text-[#831c1e]"
           }`}
         >
           {feedback.type === "success" ? (
-            <CheckCircledIcon className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+            <CheckCircledIcon className="w-4 h-4 text-[#2e7d32] shrink-0 mt-0.5" />
           ) : (
-            <CrossCircledIcon className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+            <CrossCircledIcon className="w-4 h-4 text-[#c4242a] shrink-0 mt-0.5" />
           )}
           <span>{feedback.message}</span>
         </div>
@@ -209,18 +213,18 @@ export default function StudentPortal() {
 
       {/* If Student already has an active application */}
       {hasActiveApplication && appData ? (
-        <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-6">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div className="bg-white border border-[#e6e6e6] rounded-lg p-6 space-y-6">
+          <div className="flex items-center justify-between border-b border-[#f0f0f0] pb-4">
             <div>
-              <h2 className="text-base font-semibold text-gray-900">
-                Your Hostel Application
+              <h2 className="text-sm font-semibold text-[#0a0a0a]">
+                Active Application
               </h2>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-[#6b6b6b] tabular-nums">
                 Application #{appId?.toString()}
               </p>
             </div>
             <span
-              className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadgeClass(
+              className={`px-2.5 py-1 rounded text-xs font-medium border ${getStatusBadgeClass(
                 (appStatus as ApplicationStatus) || 0
               )}`}
             >
@@ -229,55 +233,112 @@ export default function StudentPortal() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div className="p-3 bg-gray-50 rounded-md border border-gray-100 space-y-1">
-              <span className="text-gray-500 font-medium">Applied Hostel</span>
-              <p className="font-semibold text-gray-900 text-sm">
+            <div className="p-3 bg-[#f8f8f8] rounded-md border border-[#e6e6e6] space-y-1">
+              <span className="text-[#6b6b6b] font-medium">Allocated Hostel</span>
+              <p className="font-semibold text-[#0a0a0a] text-sm">
                 {hostelName || `Hostel #${appHostelId?.toString()}`}
               </p>
             </div>
 
-            <div className="p-3 bg-gray-50 rounded-md border border-gray-100 space-y-1">
-              <span className="text-gray-500 font-medium">Submitted On</span>
-              <p className="font-medium text-gray-700 flex items-center gap-1.5">
-                <ClockIcon className="w-3.5 h-3.5 text-gray-400" />
+            <div className="p-3 bg-[#f8f8f8] rounded-md border border-[#e6e6e6] space-y-1">
+              <span className="text-[#6b6b6b] font-medium">Submitted On</span>
+              <p className="font-medium text-[#0a0a0a] flex items-center gap-1.5 tabular-nums">
+                <ClockIcon className="w-3.5 h-3.5 text-[#6b6b6b]" />
                 {formatTimestamp(appCreatedAt)}
               </p>
             </div>
           </div>
 
           {appRemark && (
-            <div className="p-4 bg-gray-50 rounded-md border border-gray-200 space-y-1">
-              <span className="text-xs font-medium text-gray-700">Warden Remark:</span>
-              <p className="text-xs text-gray-600 italic">&ldquo;{appRemark}&rdquo;</p>
+            <div className="p-3 bg-[#f8f8f8] rounded-md border border-[#e6e6e6] space-y-1">
+              <span className="text-xs font-medium text-[#0a0a0a]">Warden Official Remark:</span>
+              <p className="text-xs text-[#6b6b6b] italic">&ldquo;{appRemark}&rdquo;</p>
             </div>
           )}
 
-          <div className="text-xs text-gray-500 pt-2 border-t border-gray-100 flex items-center justify-between">
-            <span>Last Updated: {formatTimestamp(appUpdatedAt)}</span>
-            <span className="font-mono">
-              Applicant: {formatAddress(wallet)}
+          <div className="text-xs text-[#6b6b6b] pt-3 border-t border-[#f0f0f0] flex items-center justify-between">
+            <span className="tabular-nums">Last Updated: {formatTimestamp(appUpdatedAt)}</span>
+            <span>
+              Applicant: <span className="font-mono tabular-nums text-[#0a0a0a]">{formatAddress(wallet)}</span>
             </span>
           </div>
         </div>
       ) : (
-        /* Apply Form when no active application exists */
-        <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-6">
-          <div>
-            <h2 className="text-base font-semibold text-gray-900">
-              Apply for Hostel Accommodation
-            </h2>
-            <p className="text-xs text-gray-500 mt-1">
-              Select one of the registered hostels to submit your on-chain application.
-            </p>
+        /* When no active application exists */
+        <div className="bg-white border border-[#e6e6e6] rounded-lg p-6 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-sm font-semibold text-[#0a0a0a]">
+                Hostel Accommodation Application
+              </h2>
+              <p className="text-xs text-[#6b6b6b] mt-0.5">
+                Submit an on-chain accommodation request to your preferred campus hostel block
+              </p>
+            </div>
+
+            {hostelCount > 0 && (
+              <button
+                type="button"
+                onClick={() => setIsApplyModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#141414] text-white hover:bg-[#262626] rounded-md text-xs font-medium transition cursor-pointer"
+              >
+                <PlusIcon className="w-3.5 h-3.5" />
+                <span>Apply for Hostel</span>
+              </button>
+            )}
           </div>
 
           {hostelCount === 0 ? (
-            <div className="p-6 text-center text-xs text-gray-500 bg-gray-50 rounded-md border border-dashed border-gray-200">
-              No hostels are currently registered by the administrator.
+            <div className="p-8 text-center text-xs text-[#6b6b6b] bg-[#f8f8f8] rounded-md border border-[#e6e6e6]">
+              No hostels are currently registered by the university administrator.
             </div>
           ) : (
-            <form onSubmit={handleApply} className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-5 bg-[#f8f8f8] border border-[#e6e6e6] rounded-md space-y-2">
+              <p className="text-xs text-[#0a0a0a] font-medium">
+                Ready to submit an accommodation request?
+              </p>
+              <p className="text-xs text-[#6b6b6b]">
+                There are currently {hostelCount} registered hostels available on campus.
+                Click below to select a hostel and submit your on-chain application.
+              </p>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsApplyModalOpen(true)}
+                  className="px-4 py-2 bg-[#141414] text-white text-xs font-medium rounded-md hover:bg-[#262626] transition cursor-pointer"
+                >
+                  Start Application
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* MODAL: Apply for Hostel */}
+      {isApplyModalOpen && (
+        <div className="fixed inset-0 bg-[#0a0a0a]/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-lg w-full p-6 space-y-5 border border-[#e6e6e6] shadow-xl">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-base font-semibold text-[#0a0a0a]">
+                  Apply for Hostel Accommodation
+                </h3>
+                <p className="text-xs text-[#6b6b6b] mt-0.5">
+                  Select a hostel hall to submit your on-chain allocation request
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsApplyModalOpen(false)}
+                className="p-1 text-[#6b6b6b] hover:text-[#0a0a0a] rounded hover:bg-[#f8f8f8] transition cursor-pointer"
+              >
+                <Cross2Icon className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleApply} className="space-y-5">
+              <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
                 {Array.from({ length: hostelCount }, (_, i) => BigInt(i + 1)).map(
                   (id) => (
                     <HostelSelectionCard
@@ -290,29 +351,38 @@ export default function StudentPortal() {
                 )}
               </div>
 
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                <span className="text-xs text-gray-500">
+              <div className="flex items-center justify-between pt-3 border-t border-[#f0f0f0]">
+                <span className="text-xs text-[#6b6b6b] tabular-nums">
                   {selectedHostelId
                     ? `Selected Hostel ID #${selectedHostelId.toString()}`
                     : "Please select a hostel"}
                 </span>
 
-                <button
-                  type="submit"
-                  disabled={
-                    !selectedHostelId ||
-                    applyHook.isPrompting ||
-                    applyHook.isMining
-                  }
-                  className="bg-gray-900 text-white text-xs font-medium px-5 py-2.5 rounded-md hover:bg-gray-800 transition disabled:opacity-50"
-                >
-                  {applyHook.isPrompting || applyHook.isMining
-                    ? "Submitting Application..."
-                    : "Submit Hostel Application"}
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsApplyModalOpen(false)}
+                    className="px-3.5 py-2 border border-[#d4d4d4] rounded-md text-xs font-medium text-[#0a0a0a] hover:bg-[#f8f8f8] transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={
+                      !selectedHostelId ||
+                      applyHook.isPrompting ||
+                      applyHook.isMining
+                    }
+                    className="px-4 py-2 bg-[#141414] text-white text-xs font-medium rounded-md hover:bg-[#262626] transition disabled:opacity-50 cursor-pointer"
+                  >
+                    {applyHook.isPrompting || applyHook.isMining
+                      ? "Submitting..."
+                      : "Confirm & Submit"}
+                  </button>
+                </div>
               </div>
             </form>
-          )}
+          </div>
         </div>
       )}
     </div>
